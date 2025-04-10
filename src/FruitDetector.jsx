@@ -85,17 +85,19 @@ const FruitDetectorApp = () => {
           ethyleneLevel: sensorResult.ethyleneLevel
         })
       })
-
+       console.log(analysisResponse)
       clearInterval(progressInterval)
       setProgress(100)
 
       if (!analysisResponse.ok) throw new Error('Analysis failed')
       const analysisResult = await analysisResponse.json()
-      
+      console.log(analysisResult)
       setPrediction({
+        Name: analysisResult.Name,
         freshness: analysisResult.freshness,
         confidence: analysisResult.confidence,
-        ethyleneLevel: sensorResult.ethyleneLevel
+        ethyleneLevel: sensorResult.ethyleneLevel,
+        recommendations: analysisResult.recommendations
       })
       
       setActiveStep("complete")
@@ -186,6 +188,7 @@ const FruitDetectorApp = () => {
                 <h2 className="text-lg font-medium text-gray-900">Results</h2>
                 <span className="text-sm text-gray-500">
                   Confidence: {prediction.confidence}%
+                  Name :{prediction.Name}
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -202,6 +205,12 @@ const FruitDetectorApp = () => {
                   </div>
                 </div>
               </div>
+              <div className="bg-gray-50 mt-3 rounded-lg p-4">
+                  <div className="text-sm text-gray-600 mb-1">Rcommendations</div>
+                  <div className="text-lg font-medium text-gray-900">
+                    {prediction.recommendations} 
+                  </div>
+                </div>
             </div>
           )}
 
